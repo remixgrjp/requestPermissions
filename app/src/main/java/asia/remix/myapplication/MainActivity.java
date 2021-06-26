@@ -1,5 +1,6 @@
 package asia.remix.myapplication;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,13 +24,16 @@ public class MainActivity extends AppCompatActivity{
 		}
 	}
 
-	ActivityResultLauncher<String> launcher =registerForActivityResult(
-		new ActivityResultContracts.RequestPermission(), isGranted -> {
-			if( isGranted ){
-				Log.d( "■", "onActivityResult()" );
-			}else{
-				Toast.makeText( this, "must WRITE_EXTERNAL_STORAGE", Toast.LENGTH_SHORT ).show();
-				finish();
+	ActivityResultLauncher<String> launcher = registerForActivityResult(
+		new ActivityResultContracts.RequestPermission()
+	,	new ActivityResultCallback<Boolean>(){
+			public void onActivityResult( Boolean result ){
+				if( result ){
+					Log.d( "■", "onActivityResult()" );
+				}else{
+					Toast.makeText( MainActivity.this, "must WRITE_EXTERNAL_STORAGE", Toast.LENGTH_SHORT ).show();
+					finish();
+				}
 			}
 		}
 	);
